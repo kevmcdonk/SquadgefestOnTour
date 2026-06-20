@@ -1,7 +1,7 @@
 export default function ArtistsPage() {
   // Spotify playlist embed ID for Squadgefest
   // Replace PLAYLIST_ID with your actual Spotify playlist ID
-  const spotifyPlaylistId = "37i9dQZF1DXcBWIGoYBM5M"; // placeholder: Today's Top Hits
+  const spotifyPlaylistId = "3GN6z3pp8tUyqxccbbPwKB"; // placeholder: Today's Top Hits
 
   return (
     <div>

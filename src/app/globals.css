@@ -1,0 +1,34 @@
+@import "tailwindcss";
+
+@theme inline {
+  --color-festival-yellow: #FFD700;
+  --color-festival-orange: #FF6B35;
+  --color-festival-pink: #FF1493;
+  --color-festival-purple: #8B5CF6;
+  --color-festival-green: #10B981;
+  --color-festival-dark: #1E1B4B;
+  --color-festival-bg: #FFF9E6;
+  --font-sans: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+}
+
+body {
+  background-color: var(--color-festival-bg);
+  color: var(--color-festival-dark);
+  font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+}
+
+/* Festival banner gradient */
+.festival-gradient {
+  background: linear-gradient(135deg, #FFD700 0%, #FF6B35 35%, #FF1493 65%, #8B5CF6 100%);
+}
+
+/* Card hover effect */
+.festival-card {
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.festival-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.15);
+}
+

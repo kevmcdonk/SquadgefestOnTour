@@ -8,10 +8,8 @@ const STORAGE_KEYS = {
   ADMIN_AUTH: "squadgefest_admin_auth",
 } as const;
 
-// Admin password for the static site demo.
-// For a production deployment, replace this with a proper server-side
-// authentication solution (e.g. Next.js route handlers + environment variables).
-const ADMIN_PASSWORD = "squadgefest2026";
+// Populated at build time from NEXT_PUBLIC_ADMIN_PASSWORD.
+const ADMIN_PASSWORD = process.env.NEXT_PUBLIC_ADMIN_PASSWORD;
 
 export function isAdminAuthenticated(): boolean {
   if (typeof window === "undefined") return false;
@@ -19,7 +17,7 @@ export function isAdminAuthenticated(): boolean {
 }
 
 export function adminLogin(password: string): boolean {
-  if (password === ADMIN_PASSWORD) {
+  if (ADMIN_PASSWORD && password === ADMIN_PASSWORD) {
     localStorage.setItem(STORAGE_KEYS.ADMIN_AUTH, "true");
     return true;
   }

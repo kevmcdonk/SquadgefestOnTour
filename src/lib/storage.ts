@@ -8,6 +8,8 @@ const STORAGE_KEYS = {
   ADMIN_AUTH: "squadgefest_admin_auth",
 } as const;
 
+const TALKS_API_PATH = "/api/talks";
+
 // Admin password for the static site demo.
 // For a production deployment, replace this with a proper server-side
 // authentication solution (e.g. Next.js route handlers + environment variables).
@@ -39,7 +41,38 @@ export function getTalks(): Talk[] {
 }
 
 export function saveTalks(talks: Talk[]): void {
+  if (typeof window === "undefined") return;
   localStorage.setItem(STORAGE_KEYS.TALKS, JSON.stringify(talks));
+  void saveTalksToRemote(talks);
+}
+
+async function saveTalksToRemote(talks: Talk[]): Promise<void> {
+  try {
+    await fetch(TALKS_API_PATH, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(talks),
+    });
+  } catch {
+    // Fall back to local storage when the API is unavailable.
+  }
+}
+
+export async function refreshTalksFromRemote(): Promise<Talk[]> {
+  if (typeof window === "undefined") return [];
+
+  try {
+    const response = await fetch(TALKS_API_PATH, { method: "GET" });
+    if (!response.ok) return getTalks();
+
+    const talks = (await response.json()) as Talk[];
+    if (!Array.isArray(talks)) return getTalks();
+
+    localStorage.setItem(STORAGE_KEYS.TALKS, JSON.stringify(talks));
+    return talks;
+  } catch {
+    return getTalks();
+  }
 }
 
 // Food

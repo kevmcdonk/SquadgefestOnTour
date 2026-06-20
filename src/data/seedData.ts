@@ -20,7 +20,7 @@ export const seedFood: FoodOption[] = [
     name: "Smoked beef brisket",
     description:
       "Briskey, smoked to perfection",
-    category: "meat",
+    category: "main",
     dietaryInfo: ["contains beef", "contains smoke"],
     providedBy: "The McDonnells",
     approved: true,

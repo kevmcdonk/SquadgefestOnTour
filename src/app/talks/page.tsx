@@ -1,8 +1,8 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Talk } from "@/types";
-import { getTalks, saveTalks } from "@/lib/storage";
+import { getTalks, refreshTalksFromRemote, saveTalks } from "@/lib/storage";
 import { seedTalks } from "@/data/seedData";
 
 function loadTalks(): Talk[] {
@@ -21,8 +21,28 @@ const dayColors: Record<string, string> = {
 };
 
 export default function TalksPage() {
-  const [talks] = useState<Talk[]>(() => loadTalks());
+  const [talks, setTalks] = useState<Talk[]>(() => loadTalks());
   const [selectedDay, setSelectedDay] = useState<string>("All");
+
+  useEffect(() => {
+    let cancelled = false;
+
+    void refreshTalksFromRemote().then((remoteTalks) => {
+      if (cancelled) return;
+
+      if (remoteTalks.length === 0) {
+        saveTalks(seedTalks);
+        setTalks(seedTalks);
+        return;
+      }
+
+      setTalks(remoteTalks);
+    });
+
+    return () => {
+      cancelled = true;
+    };
+  }, []);
 
   const approvedTalks = talks.filter((t) => t.approved);
   const days = ["All", ...Array.from(new Set(approvedTalks.map((t) => t.day).filter((d): d is string => Boolean(d))))];
